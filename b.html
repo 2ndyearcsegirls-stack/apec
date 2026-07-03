@@ -1,0 +1,97 @@
+from PIL import Image
+import base64
+from io import BytesIO
+
+path = "/mnt/data/9d867e89-784a-4250-979d-779f27ee5d91.png"
+img = Image.open(path)
+
+buffer = BytesIO()
+img.save(buffer, format="PNG")
+img_str = base64.b64encode(buffer.getvalue()).decode()
+
+html = f"""
+<!DOCTYPE html>
+<html>
+<head>
+<title>APEC Page</title>
+<style>
+body {{
+    margin:0;
+    font-family: Arial;
+    text-align:center;
+    background:#fff;
+}}
+.header img {{
+    width:100%;
+    max-height:220px;
+    object-fit:contain;
+}}
+.container {{
+    display:flex;
+    justify-content:center;
+    gap:20px;
+    margin-top:30px;
+    flex-wrap:wrap;
+}}
+.card {{
+    width:280px;
+    padding:20px;
+    border-radius:10px;
+    box-shadow:0 0 10px rgba(0,0,0,0.2);
+}}
+.yellow {{
+    background:#ffd54f;
+}}
+.admission {{
+    background:#ffeb3b;
+}}
+button {{
+    background:red;
+    color:white;
+    border:none;
+    padding:10px;
+    border-radius:20px;
+}}
+.footer {{
+    background:#ffd54f;
+    padding:10px;
+    margin-top:30px;
+    font-weight:bold;
+}}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+<img src="data:image/png;base64,{img_str}">
+</div>
+
+<div class="container">
+<div class="card yellow">
+<h2>UGC</h2>
+<p>University Grants Commission</p>
+<h3>Autonomous Status</h3>
+<p>For 10 Years</p>
+</div>
+
+<div class="card admission">
+<h3>2026 - 2027 Admissions Open</h3>
+<button>Click to Apply</button>
+<p>Contact: 7418064336</p>
+</div>
+</div>
+
+<div class="footer">
+TNEA Counseling Code: 1401
+</div>
+
+</body>
+</html>
+"""
+
+file_path = "/mnt/data/apec_page.html"
+with open(file_path, "w") as f:
+    f.write(html)
+
+file_path
